@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "167140538305",
+    "firebase_url": "https://selfcare-notes-40d2f-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "selfcare-notes-40d2f",
+    "storage_bucket": "selfcare-notes-40d2f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:167140538305:android:12c1cb892a801effe22140",
+        "android_client_info": {
+          "package_name": "com.ditow.selfcarenotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "167140538305-pkf9fo4c4dvu7u6qr0ofhmugo9mib3hn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnZgK2W13QFgSw2zC5RGmGD6ReK-7VVLU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "167140538305-pkf9fo4c4dvu7u6qr0ofhmugo9mib3hn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "167140538305-t8thnkf0p9ips5uqonkln4j592l3gece.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ditow.selfcarenotes"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
