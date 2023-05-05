@@ -11,7 +11,7 @@ class Client {
   Client(this.name, this.email);
 }
 
-final user = FirebaseAuth.instance.currentUser;
+List<Client> clients = [];
 
 class ClientsPage extends StatefulWidget {
   const ClientsPage({super.key});
@@ -21,7 +21,7 @@ class ClientsPage extends StatefulWidget {
 }
 
 class _ClientsPageState extends State<ClientsPage> {
-  late List<Client> clients = [];
+  late final User? user;
   late List<Client> selectedUserList;
 
   void dbGet() async {
@@ -36,7 +36,7 @@ class _ClientsPageState extends State<ClientsPage> {
       (doc) {
         final data = doc.data() as Map<String, dynamic>;
         for (int i = 0; i < data.length; i++) {
-          var client = Client(data[i.toString()], 'test');
+          var client = Client(data[i.toString()], data.values.elementAt(i));
           clients.add(client);
         }
       },
@@ -60,6 +60,7 @@ class _ClientsPageState extends State<ClientsPage> {
 
   @override
   void initState() {
+    user = FirebaseAuth.instance.currentUser;
     dbGet();
     selectedUserList = clients;
     super.initState();
@@ -93,10 +94,14 @@ class _ClientsPageState extends State<ClientsPage> {
             margin: const EdgeInsets.fromLTRB(0, 0, 20, 0),
             child: IconButton(
               onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                      builder: (context) => const AddClientPage()),
-                );
+                Navigator.of(context)
+                    .push(
+                      MaterialPageRoute(
+                          builder: (context) => const AddClientPage()),
+                    )
+                    .then((value) => setState(() {
+                          dbGet();
+                        }));
               },
               icon: const Icon(Icons.add),
             ),

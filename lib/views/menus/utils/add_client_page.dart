@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:selfcarenotes/views/menus/clients_page.dart';
 
 class AddClientPage extends StatefulWidget {
   const AddClientPage({super.key});
@@ -10,6 +13,7 @@ class AddClientPage extends StatefulWidget {
 }
 
 class _AddClientPageState extends State<AddClientPage> {
+  late final User? user;
   late final TextEditingController _name;
   late final TextEditingController _email;
   late final TextEditingController _phoneNumber;
@@ -30,6 +34,7 @@ class _AddClientPageState extends State<AddClientPage> {
 
   @override
   void initState() {
+    user = FirebaseAuth.instance.currentUser;
     _name = TextEditingController();
     _email = TextEditingController();
     _phoneNumber = TextEditingController();
@@ -110,6 +115,47 @@ class _AddClientPageState extends State<AddClientPage> {
                       filled: true,
                       fillColor: Color.fromARGB(80, 0, 0, 100),
                       hintText: 'phone',
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 120,
+              ),
+              SizedBox(
+                width: 120,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: TextButton(
+                    onPressed: () async {
+                      final name = _name.text;
+                      final email = _email.text;
+                      final phone = _phoneNumber.text;
+                      var map = <String, String?>{};
+                      for (int i = 0; i < clients.length; i++) {
+                        map[i.toString()] = clients[i].name;
+                        print(i);
+                      }
+                      map[clients.length.toString()] = name;
+                      print(clients.length.toString());
+                      await FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(user!.uid)
+                          .collection('userData')
+                          .doc('clients')
+                          .set(map);
+                      if (context.mounted) {
+                        Navigator.of(context).pop(context);
+                      }
+                    },
+                    style: const ButtonStyle(
+                      backgroundColor: MaterialStatePropertyAll(
+                        Color.fromARGB(160, 0, 0, 100),
+                      ),
+                    ),
+                    child: const Text(
+                      'Add',
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                 ),
