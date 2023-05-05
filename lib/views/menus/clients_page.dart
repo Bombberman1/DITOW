@@ -13,6 +13,51 @@ class Client {
 
 List<Client> clients = [];
 
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const CustomAppBar({super.key, required this.showList});
+
+  final VoidCallback showList;
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.center,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          color: const Color.fromARGB(255, 200, 200, 200),
+          boxShadow: List.filled(
+            1,
+            const BoxShadow(blurRadius: 3),
+            growable: true,
+          ),
+        ),
+        alignment: Alignment.center,
+        width: 280,
+        height: 40,
+        child: TextButton(
+          onPressed: showList,
+          child: Row(
+            children: const <Widget>[
+              Icon(
+                Icons.search,
+                color: Colors.white,
+              ),
+              Text(
+                'Search',
+                style: TextStyle(color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Size get preferredSize => Size(280, 40);
+}
+
 class ClientsPage extends StatefulWidget {
   const ClientsPage({super.key});
 
@@ -109,9 +154,14 @@ class _ClientsPageState extends State<ClientsPage> {
         ],
       ),
       body: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: openFilterDialog,
-          child: const Icon(Icons.add),
+        extendBodyBehindAppBar: true,
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(80),
+          child: CustomAppBar(
+            showList: () {
+              openFilterDialog();
+            },
+          ),
         ),
         body: selectedUserList == null || selectedUserList.length == 0
             ? const Center(child: Text('No clients selected'))

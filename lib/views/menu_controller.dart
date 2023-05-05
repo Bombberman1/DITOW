@@ -13,7 +13,7 @@ class MenuManager extends StatefulWidget {
 }
 
 class _MenuManagerState extends State<MenuManager> {
-  int _selectedIndex = 3;
+  int _selectedIndex = 2;
 
   final List<Widget> _widgetOptions = <Widget>[
     const RecordsPage(),
