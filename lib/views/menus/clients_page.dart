@@ -89,7 +89,7 @@ class _ClientsPageState extends State<ClientsPage> {
     );
   }
 
-  void dbAdd() async {
+  /*void dbAdd() async {
     var map = <String, String?>{};
     for (int i = 0; i < clients.length; i++) {
       map[i.toString()] = clients[i].name;
@@ -101,7 +101,7 @@ class _ClientsPageState extends State<ClientsPage> {
         .collection('userData')
         .doc('clients')
         .set(map);
-  }
+  }*/
 
   @override
   void initState() {
