@@ -1,7 +1,10 @@
 import 'dart:collection';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+
+User? user = FirebaseAuth.instance.currentUser;
 
 class Event {
   final String phone;
@@ -22,6 +25,8 @@ final kEvents = LinkedHashMap<DateTime, List<Event>>(
   equals: isSameDay,
   hashCode: getHashCode,
 )..addAll(_kEventSource);
+
+List<int> l = [5, 7, 9, 20, 30, 15, 1];
 
 final _kEventSource = {
   for (var item in List.generate(50, (index) => index))
