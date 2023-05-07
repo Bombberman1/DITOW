@@ -94,11 +94,10 @@ class _LogInPageState extends State<LogInPage> {
               const SizedBox(
                 height: 60,
               ),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Container(
-                  //constraints: const BoxConstraints(maxHeight: 36),
-                  color: Colors.blueGrey,
+              SizedBox(
+                width: 80,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
                   child: TextButton(
                     onPressed: () async {
                       final email = _email.text;
@@ -124,6 +123,11 @@ class _LogInPageState extends State<LogInPage> {
                         }
                       }
                     },
+                    style: const ButtonStyle(
+                      backgroundColor: MaterialStatePropertyAll(
+                        Color.fromARGB(160, 0, 0, 100),
+                      ),
+                    ),
                     child: const Text(
                       'Log In',
                       style: TextStyle(color: Colors.white),
@@ -134,28 +138,29 @@ class _LogInPageState extends State<LogInPage> {
               const SizedBox(
                 height: 10,
               ),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Container(
-                  //constraints: const BoxConstraints(maxHeight: 36),
-                  color: Colors.blueGrey,
+              SizedBox(
+                width: 200,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
                   child: TextButton(
-                    style: const ButtonStyle(
-                        backgroundColor:
-                            MaterialStatePropertyAll(Colors.blueGrey)),
                     onPressed: () {
                       Navigator.of(context).pushNamedAndRemoveUntil(
                         '/signup/',
                         (route) => false,
                       );
                     },
+                    style: const ButtonStyle(
+                      backgroundColor: MaterialStatePropertyAll(
+                        Color.fromARGB(160, 0, 0, 100),
+                      ),
+                    ),
                     child: const Text(
                       'Not registered ? Sign Up',
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ],

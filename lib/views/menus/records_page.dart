@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -7,38 +8,27 @@ import 'package:table_calendar/table_calendar.dart';
 User? user = FirebaseAuth.instance.currentUser;
 
 class Event {
+  final String clientName;
   final String phone;
-  final String masterName;
+  final String email;
+  final DateTime time;
   final String service;
   final double price;
 
-  const Event(this.phone, this.masterName, this.service, this.price);
+  const Event(this.clientName, this.phone, this.email, this.time, this.service,
+      this.price);
 
   @override
-  String toString() => phone;
+  String toString() =>
+      '$clientName    $phone    $service\n${time.day}.${time.month}.${time.year} ${time.hour}:${time.minute}';
 }
 
 /// Example events.
 ///
 /// Using a [LinkedHashMap] is highly recommended if you decide to use a map.
-final kEvents = LinkedHashMap<DateTime, List<Event>>(
-  equals: isSameDay,
-  hashCode: getHashCode,
-)..addAll(_kEventSource);
+var kEvents = LinkedHashMap<DateTime, List<Event>>();
 
-List<int> l = [5, 7, 9, 20, 30, 15, 1];
-
-final _kEventSource = {
-  for (var item in List.generate(50, (index) => index))
-    DateTime.utc(kFirstDay.year, kFirstDay.month, item * 5): List.generate(
-        item % 4 + 1,
-        (index) => Event('Event $item | ${index + 1}', 'Oleg', 'laser', 600))
-}..addAll({
-    kToday: [
-      const Event('+380472751982', 'Olena', 'nails', 400),
-      const Event('+380642894127', 'Oksana', 'hair', 200),
-    ],
-  });
+Map<DateTime, List<Event>> dataEvents = {};
 
 int getHashCode(DateTime key) {
   return key.day * 1000000 + key.month * 10000 + key.year;
@@ -65,6 +55,66 @@ class RecordsPage extends StatefulWidget {
 }
 
 class _RecordsPageState extends State<RecordsPage> {
+  void dbGet() async {
+    kEvents = LinkedHashMap<DateTime, List<Event>>();
+    dataEvents = {};
+    int numbers = 0;
+    await FirebaseFirestore.instance
+        .collection('salons')
+        .doc('12345678')
+        .collection('salonData')
+        .doc('records')
+        .collection('workers')
+        .doc(user!.uid)
+        .collection('client')
+        .get()
+        .then((value) {
+      numbers = value.docs.length;
+      print(numbers);
+    });
+    for (int i = 0; i < numbers; i++) {
+      await FirebaseFirestore.instance
+          .collection('salons')
+          .doc('12345678')
+          .collection('salonData')
+          .doc('records')
+          .collection('workers')
+          .doc(user!.uid)
+          .collection('client')
+          .doc(i.toString())
+          .get()
+          .then(
+        (doc) {
+          final data = doc.data() as Map<String, dynamic>;
+          var event = Event(
+              data['name'],
+              data['phone'],
+              data['email'],
+              DateTime.parse(data['time']),
+              data['service'],
+              double.parse(data['price']));
+          if (dataEvents[DateTime.parse(data['time'])] == null) {
+            dataEvents[DateTime.parse(data['time'])] =
+                List.generate(1, (index) => event);
+          } else if (dataEvents[DateTime.parse(data['time'])] != null) {
+            List<Event> list = [];
+            for (Event obj in dataEvents[DateTime.parse(data['time'])]!) {
+              list.add(obj);
+            }
+            list.add(event);
+            dataEvents[DateTime.parse(data['time'])] = list;
+          }
+          kEvents = LinkedHashMap<DateTime, List<Event>>(
+            equals: isSameDay,
+            hashCode: getHashCode,
+          )..addAll(dataEvents);
+        },
+        onError: (e) => print(e),
+      );
+    }
+    setState(() {});
+  }
+
   late final ValueNotifier<List<Event>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
@@ -77,7 +127,8 @@ class _RecordsPageState extends State<RecordsPage> {
   @override
   void initState() {
     super.initState();
-
+    user = FirebaseAuth.instance.currentUser;
+    dbGet();
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
   }
