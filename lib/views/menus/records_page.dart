@@ -93,16 +93,33 @@ class _RecordsPageState extends State<RecordsPage> {
               DateTime.parse(data['time']),
               data['service'],
               double.parse(data['price']));
-          if (dataEvents[DateTime.parse(data['time'])] == null) {
-            dataEvents[DateTime.parse(data['time'])] =
+          if (dataEvents[DateTime(
+                  DateTime.parse(data['time']).year,
+                  DateTime.parse(data['time']).month,
+                  DateTime.parse(data['time']).day)] ==
+              null) {
+            dataEvents[DateTime(
+                    DateTime.parse(data['time']).year,
+                    DateTime.parse(data['time']).month,
+                    DateTime.parse(data['time']).day)] =
                 List.generate(1, (index) => event);
-          } else if (dataEvents[DateTime.parse(data['time'])] != null) {
+          } else if (dataEvents[DateTime(
+                  DateTime.parse(data['time']).year,
+                  DateTime.parse(data['time']).month,
+                  DateTime.parse(data['time']).day)] !=
+              null) {
             List<Event> list = [];
-            for (Event obj in dataEvents[DateTime.parse(data['time'])]!) {
+            for (Event obj in dataEvents[DateTime(
+                DateTime.parse(data['time']).year,
+                DateTime.parse(data['time']).month,
+                DateTime.parse(data['time']).day)]!) {
               list.add(obj);
             }
             list.add(event);
-            dataEvents[DateTime.parse(data['time'])] = list;
+            dataEvents[DateTime(
+                DateTime.parse(data['time']).year,
+                DateTime.parse(data['time']).month,
+                DateTime.parse(data['time']).day)] = list;
           }
           kEvents = LinkedHashMap<DateTime, List<Event>>(
             equals: isSameDay,
