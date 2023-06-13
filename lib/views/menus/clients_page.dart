@@ -21,7 +21,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: Alignment.center,
+      alignment: Alignment.bottomCenter,
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
@@ -131,48 +131,73 @@ class _ClientsPageState extends State<ClientsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Clients'),
-        actions: <Widget>[
-          Container(
-            margin: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-            child: IconButton(
-              onPressed: () {
-                Navigator.of(context)
-                    .push(
-                      MaterialPageRoute(
-                          builder: (context) => const AddClientPage()),
-                    )
-                    .then((value) => setState(() {
-                          dbGet();
-                        }));
-              },
-              icon: const Icon(Icons.add),
+    return Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/images/AfterRegisterBackground.png"),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        backgroundColor: Colors.transparent,
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(kToolbarHeight),
+          child: Opacity(
+            opacity: 0.8,
+            child: AppBar(
+              centerTitle: true,
+              backgroundColor: Colors.white,
+              title: const Text(
+                'Clients',
+                style: TextStyle(color: Colors.black),
+              ),
+              actions: <Widget>[
+                Container(
+                  margin: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.of(context)
+                          .push(
+                            MaterialPageRoute(
+                                builder: (context) => const AddClientPage()),
+                          )
+                          .then((value) => setState(() {
+                                dbGet();
+                              }));
+                    },
+                    icon: const Icon(
+                      Icons.add,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-        ],
-      ),
-      body: Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(80),
-          child: CustomAppBar(
-            showList: () {
-              openFilterDialog();
-            },
-          ),
         ),
-        body: selectedUserList == null || selectedUserList.length == 0
-            ? const Center(child: Text('No clients selected'))
-            : ListView.builder(
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(selectedUserList[index].name!),
-                  );
-                },
-                itemCount: selectedUserList.length,
-              ),
+        body: Scaffold(
+          backgroundColor: Colors.transparent,
+          extendBodyBehindAppBar: true,
+          appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(kTextTabBarHeight * 2),
+            child: CustomAppBar(
+              showList: () {
+                openFilterDialog();
+              },
+            ),
+          ),
+          body: selectedUserList == null || selectedUserList.length == 0
+              ? const Center(child: Text('No clients selected'))
+              : ListView.builder(
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(selectedUserList[index].name!),
+                    );
+                  },
+                  itemCount: selectedUserList.length,
+                ),
+        ),
       ),
     );
   }

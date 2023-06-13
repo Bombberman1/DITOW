@@ -51,118 +51,140 @@ class _AddClientPageState extends State<AddClientPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add Client'),
+    return Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/images/AfterRegisterBackground.png"),
+          fit: BoxFit.cover,
+        ),
       ),
-      body: ListView(
-        children: [
-          Column(
-            children: <Widget>[
-              const SizedBox(
-                height: 200,
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        backgroundColor: Colors.transparent,
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(kToolbarHeight),
+          child: Opacity(
+            opacity: 0.8,
+            child: AppBar(
+              backgroundColor: Colors.white,
+              iconTheme: IconThemeData(color: Colors.black),
+              centerTitle: true,
+              title: const Text(
+                'Add Client',
+                style: TextStyle(color: Colors.black),
               ),
-              SizedBox(
-                width: 300,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: TextField(
-                    controller: _name,
-                    keyboardType: TextInputType.name,
-                    decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.all(20.0),
-                      border: InputBorder.none,
-                      filled: true,
-                      fillColor: Color.fromARGB(80, 0, 0, 100),
-                      hintText: 'name',
-                    ),
-                  ),
+            ),
+          ),
+        ),
+        body: ListView(
+          children: [
+            Column(
+              children: <Widget>[
+                const SizedBox(
+                  height: 200,
                 ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              SizedBox(
-                width: 300,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: TextField(
-                    controller: _email,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.all(20.0),
-                      border: InputBorder.none,
-                      filled: true,
-                      fillColor: Color.fromARGB(80, 0, 0, 100),
-                      hintText: 'email',
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              SizedBox(
-                width: 300,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: TextField(
-                    controller: _phoneNumber,
-                    keyboardType: TextInputType.phone,
-                    decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.all(20.0),
-                      border: InputBorder.none,
-                      filled: true,
-                      fillColor: Color.fromARGB(80, 0, 0, 100),
-                      hintText: 'phone',
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 120,
-              ),
-              SizedBox(
-                width: 120,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: TextButton(
-                    onPressed: () async {
-                      final name = _name.text;
-                      final email = _email.text;
-                      final phone = _phoneNumber.text;
-                      var map = <String, String?>{};
-                      for (int i = 0; i < clients.length; i++) {
-                        map[i.toString()] = clients[i].name;
-                        print(i);
-                      }
-                      map[clients.length.toString()] = name;
-                      print(clients.length.toString());
-                      await FirebaseFirestore.instance
-                          .collection('users')
-                          .doc(user!.uid)
-                          .collection('userData')
-                          .doc('clients')
-                          .set(map);
-                      if (context.mounted) {
-                        Navigator.of(context).pop(context);
-                      }
-                    },
-                    style: const ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll(
-                        Color.fromARGB(160, 0, 0, 100),
+                SizedBox(
+                  width: 300,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: TextField(
+                      controller: _name,
+                      keyboardType: TextInputType.name,
+                      decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.all(20.0),
+                        border: InputBorder.none,
+                        filled: true,
+                        fillColor: Color.fromARGB(80, 0, 0, 100),
+                        hintText: 'name',
                       ),
                     ),
-                    child: const Text(
-                      'Add',
-                      style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  width: 300,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: TextField(
+                      controller: _email,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.all(20.0),
+                        border: InputBorder.none,
+                        filled: true,
+                        fillColor: Color.fromARGB(80, 0, 0, 100),
+                        hintText: 'email',
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ],
+                const SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  width: 300,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: TextField(
+                      controller: _phoneNumber,
+                      keyboardType: TextInputType.phone,
+                      decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.all(20.0),
+                        border: InputBorder.none,
+                        filled: true,
+                        fillColor: Color.fromARGB(80, 0, 0, 100),
+                        hintText: 'phone',
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 120,
+                ),
+                SizedBox(
+                  width: 120,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: TextButton(
+                      onPressed: () async {
+                        final name = _name.text;
+                        final email = _email.text;
+                        final phone = _phoneNumber.text;
+                        var map = <String, String?>{};
+                        for (int i = 0; i < clients.length; i++) {
+                          map[i.toString()] = clients[i].name;
+                          print(i);
+                        }
+                        map[clients.length.toString()] = name;
+                        print(clients.length.toString());
+                        await FirebaseFirestore.instance
+                            .collection('users')
+                            .doc(user!.uid)
+                            .collection('userData')
+                            .doc('clients')
+                            .set(map);
+                        if (context.mounted) {
+                          Navigator.of(context).pop(context);
+                        }
+                      },
+                      style: const ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(
+                          Color.fromARGB(160, 0, 0, 100),
+                        ),
+                      ),
+                      child: const Text(
+                        'Add',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

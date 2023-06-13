@@ -60,13 +60,9 @@ class _RecordsPageState extends State<RecordsPage> {
     dataEvents = {};
     int numbers = 0;
     await FirebaseFirestore.instance
-        .collection('salons')
-        .doc('12345678')
-        .collection('salonData')
-        .doc('records')
-        .collection('workers')
+        .collection('users')
         .doc(user!.uid)
-        .collection('client')
+        .collection('records')
         .get()
         .then((value) {
       numbers = value.docs.length;
@@ -74,13 +70,9 @@ class _RecordsPageState extends State<RecordsPage> {
     });
     for (int i = 0; i < numbers; i++) {
       await FirebaseFirestore.instance
-          .collection('salons')
-          .doc('12345678')
-          .collection('salonData')
-          .doc('records')
-          .collection('workers')
+          .collection('users')
           .doc(user!.uid)
-          .collection('client')
+          .collection('records')
           .doc(i.toString())
           .get()
           .then(
@@ -205,68 +197,90 @@ class _RecordsPageState extends State<RecordsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Records'),
+    return Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/images/AfterRegisterBackground.png"),
+          fit: BoxFit.cover,
+        ),
       ),
-      body: Column(
-        children: [
-          TableCalendar<Event>(
-            firstDay: kFirstDay,
-            lastDay: kLastDay,
-            focusedDay: _focusedDay,
-            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-            rangeStartDay: _rangeStart,
-            rangeEndDay: _rangeEnd,
-            calendarFormat: _calendarFormat,
-            rangeSelectionMode: _rangeSelectionMode,
-            eventLoader: _getEventsForDay,
-            startingDayOfWeek: StartingDayOfWeek.monday,
-            calendarStyle: CalendarStyle(
-              // Use `CalendarStyle` to customize the UI
-              outsideDaysVisible: false,
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        backgroundColor: Colors.transparent,
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(kToolbarHeight),
+          child: Opacity(
+            opacity: 0.8,
+            child: AppBar(
+              backgroundColor: Colors.white,
+              centerTitle: true,
+              title: const Text(
+                'Records',
+                style: TextStyle(color: Colors.black),
+              ),
             ),
-            onDaySelected: _onDaySelected,
-            onRangeSelected: _onRangeSelected,
-            onFormatChanged: (format) {
-              if (_calendarFormat != format) {
-                setState(() {
-                  _calendarFormat = format;
-                });
-              }
-            },
-            onPageChanged: (focusedDay) {
-              _focusedDay = focusedDay;
-            },
           ),
-          const SizedBox(height: 8.0),
-          Expanded(
-            child: ValueListenableBuilder<List<Event>>(
-              valueListenable: _selectedEvents,
-              builder: (context, value, _) {
-                return ListView.builder(
-                  itemCount: value.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 12.0,
-                        vertical: 4.0,
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      child: ListTile(
-                        onTap: () => print('${value[index]}'),
-                        title: Text('${value[index]}'),
-                      ),
-                    );
-                  },
-                );
+        ),
+        body: Column(
+          children: [
+            const SizedBox(height: kTextTabBarHeight * 2),
+            TableCalendar<Event>(
+              firstDay: kFirstDay,
+              lastDay: kLastDay,
+              focusedDay: _focusedDay,
+              selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+              rangeStartDay: _rangeStart,
+              rangeEndDay: _rangeEnd,
+              calendarFormat: _calendarFormat,
+              rangeSelectionMode: _rangeSelectionMode,
+              eventLoader: _getEventsForDay,
+              startingDayOfWeek: StartingDayOfWeek.monday,
+              calendarStyle: CalendarStyle(
+                // Use `CalendarStyle` to customize the UI
+                outsideDaysVisible: false,
+              ),
+              onDaySelected: _onDaySelected,
+              onRangeSelected: _onRangeSelected,
+              onFormatChanged: (format) {
+                if (_calendarFormat != format) {
+                  setState(() {
+                    _calendarFormat = format;
+                  });
+                }
+              },
+              onPageChanged: (focusedDay) {
+                _focusedDay = focusedDay;
               },
             ),
-          ),
-        ],
+            const SizedBox(height: 8.0),
+            Expanded(
+              child: ValueListenableBuilder<List<Event>>(
+                valueListenable: _selectedEvents,
+                builder: (context, value, _) {
+                  return ListView.builder(
+                    itemCount: value.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 12.0,
+                          vertical: 4.0,
+                        ),
+                        decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        child: ListTile(
+                          onTap: () => print('${value[index]}'),
+                          title: Text('${value[index]}'),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

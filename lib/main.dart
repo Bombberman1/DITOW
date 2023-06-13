@@ -13,7 +13,7 @@ void main() {
   runApp(MaterialApp(
     title: 'SelfCare-Notes',
     theme: ThemeData(
-      primarySwatch: Colors.pink,
+      primarySwatch: Colors.blue,
     ),
     home: const Scaffold(
       body: HomePage(),
@@ -54,8 +54,16 @@ class HomePage extends StatelessWidget {
             }
             return const MenuManager();
           default:
-            return const Scaffold(
-              backgroundColor: Colors.white,
+            return Container(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/images/Register.png"),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: const Scaffold(
+                backgroundColor: Colors.transparent,
+              ),
             );
         }
       },
