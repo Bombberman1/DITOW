@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:selfcarenotes/views/menus/add_record_page.dart';
 import 'package:selfcarenotes/views/menus/clients_page.dart';
 import 'package:selfcarenotes/views/menus/records_page.dart';
+import 'package:selfcarenotes/views/menus/link_page.dart';
 import 'package:selfcarenotes/views/menus/settings_page.dart';
 
 class MenuManager extends StatefulWidget {
@@ -12,10 +13,11 @@ class MenuManager extends StatefulWidget {
 }
 
 class _MenuManagerState extends State<MenuManager> {
-  int _selectedIndex = 1;
+  int _selectedIndex = 2;
 
   final List<Widget> _widgetOptions = <Widget>[
     const RecordsPage(),
+    const SalonPage(),
     const AddRecordPage(),
     const ClientsPage(),
     const SettingsPage(),
@@ -36,6 +38,10 @@ class _MenuManagerState extends State<MenuManager> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.schedule),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.link),
             label: '',
           ),
           BottomNavigationBarItem(

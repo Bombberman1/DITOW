@@ -205,7 +205,6 @@ class _RecordsPageState extends State<RecordsPage> {
         ),
       ),
       child: Scaffold(
-        extendBodyBehindAppBar: true,
         backgroundColor: Colors.transparent,
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(kToolbarHeight),
@@ -223,7 +222,6 @@ class _RecordsPageState extends State<RecordsPage> {
         ),
         body: Column(
           children: [
-            const SizedBox(height: kTextTabBarHeight * 2),
             TableCalendar<Event>(
               firstDay: kFirstDay,
               lastDay: kLastDay,

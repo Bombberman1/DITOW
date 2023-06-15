@@ -59,7 +59,6 @@ class _AddClientPageState extends State<AddClientPage> {
         ),
       ),
       child: Scaffold(
-        extendBodyBehindAppBar: true,
         backgroundColor: Colors.transparent,
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(kToolbarHeight),
@@ -67,7 +66,7 @@ class _AddClientPageState extends State<AddClientPage> {
             opacity: 0.8,
             child: AppBar(
               backgroundColor: Colors.white,
-              iconTheme: IconThemeData(color: Colors.black),
+              iconTheme: const IconThemeData(color: Colors.black),
               centerTitle: true,
               title: const Text(
                 'Add Client',
@@ -94,7 +93,7 @@ class _AddClientPageState extends State<AddClientPage> {
                         contentPadding: EdgeInsets.all(20.0),
                         border: InputBorder.none,
                         filled: true,
-                        fillColor: Color.fromARGB(80, 0, 0, 100),
+                        fillColor: Color.fromRGBO(0, 0, 100, 0.1),
                         hintText: 'name',
                       ),
                     ),
@@ -114,7 +113,7 @@ class _AddClientPageState extends State<AddClientPage> {
                         contentPadding: EdgeInsets.all(20.0),
                         border: InputBorder.none,
                         filled: true,
-                        fillColor: Color.fromARGB(80, 0, 0, 100),
+                        fillColor: Color.fromRGBO(0, 0, 100, 0.1),
                         hintText: 'email',
                       ),
                     ),
@@ -134,7 +133,7 @@ class _AddClientPageState extends State<AddClientPage> {
                         contentPadding: EdgeInsets.all(20.0),
                         border: InputBorder.none,
                         filled: true,
-                        fillColor: Color.fromARGB(80, 0, 0, 100),
+                        fillColor: Color.fromRGBO(0, 0, 100, 0.1),
                         hintText: 'phone',
                       ),
                     ),
@@ -153,17 +152,19 @@ class _AddClientPageState extends State<AddClientPage> {
                         final email = _email.text;
                         final phone = _phoneNumber.text;
                         var map = <String, String?>{};
-                        for (int i = 0; i < clients.length; i++) {
+                        /*for (int i = 0; i < clients.length; i++) {
                           map[i.toString()] = clients[i].name;
                           print(i);
-                        }
-                        map[clients.length.toString()] = name;
+                        }*/
+                        map['name'] = name;
+                        map['email'] = email;
+                        map['phone'] = phone;
                         print(clients.length.toString());
                         await FirebaseFirestore.instance
                             .collection('users')
                             .doc(user!.uid)
-                            .collection('userData')
-                            .doc('clients')
+                            .collection('clients')
+                            .doc(clients.length.toString())
                             .set(map);
                         if (context.mounted) {
                           Navigator.of(context).pop(context);
@@ -171,8 +172,7 @@ class _AddClientPageState extends State<AddClientPage> {
                       },
                       style: const ButtonStyle(
                         backgroundColor: MaterialStatePropertyAll(
-                          Color.fromARGB(160, 0, 0, 100),
-                        ),
+                            Color.fromRGBO(223, 195, 194, 1)),
                       ),
                       child: const Text(
                         'Add',

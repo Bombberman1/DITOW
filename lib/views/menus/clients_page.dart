@@ -8,7 +8,8 @@ import 'package:selfcarenotes/views/menus/utils/add_client_page.dart';
 class Client {
   final String? name;
   final String? email;
-  Client(this.name, this.email);
+  final String? phone;
+  Client(this.name, this.email, this.phone);
 }
 
 List<Client> clients = [];
@@ -22,32 +23,31 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.bottomCenter,
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          color: const Color.fromARGB(255, 200, 200, 200),
-          boxShadow: List.filled(
-            1,
-            const BoxShadow(blurRadius: 3),
-            growable: true,
-          ),
-        ),
-        alignment: Alignment.center,
+      child: SizedBox(
         width: 280,
         height: 40,
-        child: TextButton(
-          onPressed: showList,
-          child: Row(
-            children: const <Widget>[
-              Icon(
-                Icons.search,
-                color: Colors.white,
-              ),
-              Text(
-                'Search',
-                style: TextStyle(color: Colors.white),
-              ),
-            ],
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: TextButton(
+            onPressed: showList,
+            style: const ButtonStyle(
+                backgroundColor: MaterialStatePropertyAll(
+              Color.fromRGBO(0, 0, 100, 0.2),
+            )),
+            child: Row(
+              children: <Widget>[
+                Icon(
+                  Icons.search,
+                  color: Colors.black.withOpacity(0.6),
+                ),
+                Text(
+                  'Search',
+                  style: TextStyle(
+                    color: Colors.black.withOpacity(0.6),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -71,22 +71,32 @@ class _ClientsPageState extends State<ClientsPage> {
 
   void dbGet() async {
     clients = [];
+    int numbers = 0;
     await FirebaseFirestore.instance
         .collection('users')
         .doc(user!.uid)
-        .collection('userData')
-        .doc('clients')
+        .collection('clients')
         .get()
-        .then(
-      (doc) {
-        final data = doc.data() as Map<String, dynamic>;
-        for (int i = 0; i < data.length; i++) {
-          var client = Client(data[i.toString()], data.values.elementAt(i));
+        .then((value) {
+      numbers = value.docs.length;
+    });
+
+    for (int i = 0; i < numbers; i++) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user!.uid)
+          .collection('clients')
+          .doc(i.toString())
+          .get()
+          .then(
+        (doc) {
+          final data = doc.data() as Map<String, dynamic>;
+          var client = Client(data['name'], data['email'], data['phone']);
           clients.add(client);
-        }
-      },
-      onError: (e) => print(e),
-    );
+        },
+        onError: (e) => print(e),
+      );
+    }
   }
 
   /*void dbAdd() async {
@@ -139,7 +149,6 @@ class _ClientsPageState extends State<ClientsPage> {
         ),
       ),
       child: Scaffold(
-        extendBodyBehindAppBar: true,
         backgroundColor: Colors.transparent,
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(kToolbarHeight),
@@ -178,7 +187,6 @@ class _ClientsPageState extends State<ClientsPage> {
         ),
         body: Scaffold(
           backgroundColor: Colors.transparent,
-          extendBodyBehindAppBar: true,
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(kTextTabBarHeight * 2),
             child: CustomAppBar(
@@ -190,10 +198,76 @@ class _ClientsPageState extends State<ClientsPage> {
           body: selectedUserList == null || selectedUserList.length == 0
               ? const Center(child: Text('No clients selected'))
               : ListView.builder(
+                  padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
                   itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(selectedUserList[index].name!),
-                    );
+                    return Align(
+                        alignment: Alignment.center,
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: 10),
+                          child: SizedBox(
+                            width: 320,
+                            height: 80,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(24),
+                              child: TextButton(
+                                onPressed: () {},
+                                style: const ButtonStyle(
+                                    backgroundColor: MaterialStatePropertyAll(
+                                  Color.fromRGBO(0, 0, 100, 0.1),
+                                )),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          selectedUserList[index].name!,
+                                          style: TextStyle(
+                                            color:
+                                                Colors.black.withOpacity(0.6),
+                                          ),
+                                        ),
+                                        const Expanded(child: SizedBox()),
+                                        Text(
+                                          selectedUserList[index].phone!,
+                                          style: TextStyle(
+                                            color:
+                                                Colors.black.withOpacity(0.6),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          selectedUserList[index].email!,
+                                          style: TextStyle(
+                                            color:
+                                                Colors.black.withOpacity(0.6),
+                                          ),
+                                        ),
+                                        const Expanded(child: SizedBox()),
+                                        Icon(
+                                          Icons.arrow_forward_rounded,
+                                          color: Colors.black.withOpacity(0.6),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ));
                   },
                   itemCount: selectedUserList.length,
                 ),

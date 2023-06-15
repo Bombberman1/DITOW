@@ -24,22 +24,32 @@ class _AddRecordPageState extends State<AddRecordPage> {
 
   void dbGet() async {
     clients = [];
+    int numbers = 0;
     await FirebaseFirestore.instance
         .collection('users')
         .doc(user!.uid)
-        .collection('userData')
-        .doc('clients')
+        .collection('clients')
         .get()
-        .then(
-      (doc) {
-        final data = doc.data() as Map<String, dynamic>;
-        for (int i = 0; i < data.length; i++) {
-          var client = Client(data[i.toString()], data.values.elementAt(i));
+        .then((value) {
+      numbers = value.docs.length;
+    });
+
+    for (int i = 0; i < numbers; i++) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user!.uid)
+          .collection('clients')
+          .doc(i.toString())
+          .get()
+          .then(
+        (doc) {
+          final data = doc.data() as Map<String, dynamic>;
+          var client = Client(data['name'], data['email'], data['phone']);
           clients.add(client);
-        }
-      },
-      onError: (e) => print(e),
-    );
+        },
+        onError: (e) => print(e),
+      );
+    }
   }
 
   @override
@@ -91,7 +101,6 @@ class _AddRecordPageState extends State<AddRecordPage> {
         ),
       ),
       child: Scaffold(
-        extendBodyBehindAppBar: true,
         backgroundColor: Colors.transparent,
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(kToolbarHeight),

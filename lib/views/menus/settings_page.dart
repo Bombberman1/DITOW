@@ -19,7 +19,6 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
       ),
       child: Scaffold(
-        extendBodyBehindAppBar: true,
         backgroundColor: Colors.transparent,
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(kToolbarHeight),
@@ -39,7 +38,7 @@ class _SettingsPageState extends State<SettingsPage> {
           child: Column(
             children: [
               const SizedBox(
-                height: kToolbarHeight * 4,
+                height: kToolbarHeight * 2,
               ),
               Container(
                 width: 180,
@@ -66,8 +65,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     },
                     style: const ButtonStyle(
                       backgroundColor: MaterialStatePropertyAll(
-                        Color.fromARGB(160, 0, 0, 100),
-                      ),
+                          Color.fromRGBO(223, 195, 194, 1)),
                     ),
                     child: const Text(
                       'Account',

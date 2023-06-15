@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import 'log_out_page.dart';
+
 class VerifyEmailView extends StatefulWidget {
   const VerifyEmailView({super.key});
 
@@ -20,9 +22,6 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          title: const Text('Verify Email'),
-        ),
         body: ListView(
           children: [
             Column(
@@ -74,9 +73,9 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
                     borderRadius: BorderRadius.circular(8),
                     child: TextButton(
                       onPressed: () {
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                          '/logout/',
-                          (route) => false,
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) => const LogOutPage()),
                         );
                       },
                       style: const ButtonStyle(

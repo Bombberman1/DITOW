@@ -39,21 +39,30 @@ class _SignUpPageState extends State<SignUpPage> {
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage("assets/images/AfterRegisterBackground.png"),
+          image: AssetImage("assets/images/Register.png"),
           fit: BoxFit.cover,
         ),
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          title: const Text('Sign Up'),
-        ),
         body: ListView(
           children: [
             Column(
               children: [
-                const SizedBox(
-                  height: 130,
+                Align(
+                  alignment: const AlignmentDirectional(0, 0),
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 40, 0, 60),
+                    child: Container(
+                      width: 180,
+                      height: 180,
+                      clipBehavior: Clip.antiAlias,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
+                      child: Image.asset('assets/images/Ditow logo.png'),
+                    ),
+                  ),
                 ),
                 SizedBox(
                   width: 300,
@@ -67,7 +76,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         contentPadding: EdgeInsets.all(20.0),
                         border: InputBorder.none,
                         filled: true,
-                        fillColor: Color.fromARGB(80, 0, 0, 100),
+                        fillColor: Color.fromRGBO(255, 255, 255, 0.8),
                         hintText: 'name',
                       ),
                     ),
@@ -88,7 +97,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         contentPadding: EdgeInsets.all(20.0),
                         border: InputBorder.none,
                         filled: true,
-                        fillColor: Color.fromARGB(80, 0, 0, 100),
+                        fillColor: Color.fromRGBO(255, 255, 255, 0.8),
                         hintText: 'email',
                       ),
                     ),
@@ -110,7 +119,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         contentPadding: EdgeInsets.all(20.0),
                         border: InputBorder.none,
                         filled: true,
-                        fillColor: Color.fromARGB(80, 0, 0, 100),
+                        fillColor: Color.fromRGBO(255, 255, 255, 0.8),
                         hintText: 'password',
                       ),
                     ),
@@ -134,67 +143,99 @@ class _SignUpPageState extends State<SignUpPage> {
                         contentPadding: EdgeInsets.all(20.0),
                         border: InputBorder.none,
                         filled: true,
-                        fillColor: Color.fromARGB(80, 0, 0, 100),
+                        fillColor: Color.fromRGBO(255, 255, 255, 0.8),
                         hintText: 'phone',
                       ),
                     ),
                   ),
                 ),
-                TextButton(
-                  onPressed: () async {
-                    final name = _name.text;
-                    final email = _email.text;
-                    final password = _password.text;
-                    final phone = _phone.text;
-                    try {
-                      final userCredential = await FirebaseAuth.instance
-                          .createUserWithEmailAndPassword(
-                        email: email,
-                        password: password,
-                      );
-                      await userCredential.user?.updateDisplayName(name);
-                      final user = FirebaseAuth.instance.currentUser;
-                      await FirebaseFirestore.instance
-                          .collection('users')
-                          .doc(user!.uid)
-                          .set({});
-                      await FirebaseFirestore.instance
-                          .collection('users')
-                          .doc(user.uid)
-                          .collection('userData')
-                          .doc('data')
-                          .set({'phone': phone});
-                      print(userCredential);
-                    } on FirebaseAuthException catch (e) {
-                      switch (e.code) {
-                        case 'weak-password':
-                          print('Password is weak');
-                          break;
-                        case 'email-already-in-use':
-                          print('Email already exists');
-                          break;
-                        case 'invalid-email':
-                          print('Wrong email format');
-                          break;
-                      }
-                    }
-                    if (context.mounted) {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                        '/home/',
-                        (route) => false,
-                      );
-                    }
-                  },
-                  child: const Text('Sign Up'),
+                const SizedBox(
+                  height: 20,
                 ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      '/login/',
-                      (route) => false,
-                    );
-                  },
-                  child: const Text('Registered ? Log In'),
+                SizedBox(
+                  width: 90,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: TextButton(
+                      onPressed: () async {
+                        final name = _name.text;
+                        final email = _email.text;
+                        final password = _password.text;
+                        final phone = _phone.text;
+                        try {
+                          final userCredential = await FirebaseAuth.instance
+                              .createUserWithEmailAndPassword(
+                            email: email,
+                            password: password,
+                          );
+                          await userCredential.user?.updateDisplayName(name);
+                          final user = FirebaseAuth.instance.currentUser;
+                          await FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(user!.uid)
+                              .set({});
+                          await FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(user.uid)
+                              .collection('userData')
+                              .doc('data')
+                              .set({'phone': phone});
+                          print(userCredential);
+                        } on FirebaseAuthException catch (e) {
+                          switch (e.code) {
+                            case 'weak-password':
+                              print('Password is weak');
+                              break;
+                            case 'email-already-in-use':
+                              print('Email already exists');
+                              break;
+                            case 'invalid-email':
+                              print('Wrong email format');
+                              break;
+                          }
+                        }
+                        if (context.mounted) {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                            '/home/',
+                            (route) => false,
+                          );
+                        }
+                      },
+                      style: const ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(
+                            Color.fromRGBO(223, 195, 194, 1)),
+                      ),
+                      child: const Text(
+                        'Sign Up',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: kBottomNavigationBarHeight * 2.1,
+                ),
+                SizedBox(
+                  width: 80,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                          '/login/',
+                          (route) => false,
+                        );
+                      },
+                      style: const ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(
+                            Color.fromRGBO(223, 195, 194, 1)),
+                      ),
+                      child: const Text(
+                        'Log In',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),

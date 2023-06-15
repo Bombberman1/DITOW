@@ -37,11 +37,11 @@ class _LogInPageState extends State<LogInPage> {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          title: const Text('Log In'),
-        ),
         body: ListView(
           children: [
+            const SizedBox(
+              height: kToolbarHeight,
+            ),
             Column(
               children: [
                 Align(
@@ -71,7 +71,7 @@ class _LogInPageState extends State<LogInPage> {
                         contentPadding: EdgeInsets.all(20.0),
                         border: InputBorder.none,
                         filled: true,
-                        fillColor: Color.fromARGB(80, 0, 0, 100),
+                        fillColor: Color.fromRGBO(255, 255, 255, 0.8),
                         hintText: 'email',
                       ),
                     ),
@@ -93,7 +93,7 @@ class _LogInPageState extends State<LogInPage> {
                         contentPadding: EdgeInsets.all(20.0),
                         border: InputBorder.none,
                         filled: true,
-                        fillColor: Color.fromARGB(80, 0, 0, 100),
+                        fillColor: Color.fromRGBO(255, 255, 255, 0.8),
                         hintText: 'password',
                       ),
                     ),
@@ -133,8 +133,7 @@ class _LogInPageState extends State<LogInPage> {
                       },
                       style: const ButtonStyle(
                         backgroundColor: MaterialStatePropertyAll(
-                          Color.fromARGB(160, 0, 0, 100),
-                        ),
+                            Color.fromRGBO(223, 195, 194, 1)),
                       ),
                       child: const Text(
                         'Log In',
@@ -144,10 +143,10 @@ class _LogInPageState extends State<LogInPage> {
                   ),
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: kBottomNavigationBarHeight * 3,
                 ),
                 SizedBox(
-                  width: 200,
+                  width: 90,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: TextButton(
@@ -159,11 +158,10 @@ class _LogInPageState extends State<LogInPage> {
                       },
                       style: const ButtonStyle(
                         backgroundColor: MaterialStatePropertyAll(
-                          Color.fromARGB(160, 0, 0, 100),
-                        ),
+                            Color.fromRGBO(223, 195, 194, 1)),
                       ),
                       child: const Text(
-                        'Not registered ? Sign Up',
+                        'Sign Up',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),

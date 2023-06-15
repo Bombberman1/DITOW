@@ -15,7 +15,6 @@ class LogOutPage extends StatelessWidget {
         ),
       ),
       child: Scaffold(
-        extendBodyBehindAppBar: true,
         backgroundColor: Colors.transparent,
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(kToolbarHeight),
@@ -35,7 +34,7 @@ class LogOutPage extends StatelessWidget {
         body: Center(
           child: Column(
             children: [
-              const SizedBox(height: kTextTabBarHeight * 4),
+              const SizedBox(height: kTextTabBarHeight * 2),
               Container(
                 width: 180,
                 height: 180,
@@ -69,10 +68,15 @@ class LogOutPage extends StatelessWidget {
                     },
                     style: const ButtonStyle(
                       backgroundColor: MaterialStatePropertyAll(
-                        Color.fromARGB(160, 0, 0, 100),
+                        Color.fromRGBO(255, 255, 255, 0.8),
                       ),
                     ),
-                    child: const Text('Log out'),
+                    child: Text(
+                      'Log out',
+                      style: TextStyle(
+                        color: Colors.black.withOpacity(0.6),
+                      ),
+                    ),
                   ),
                 ),
               ),
