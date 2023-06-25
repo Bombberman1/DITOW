@@ -151,6 +151,45 @@ class _AddClientPageState extends State<AddClientPage> {
                         final name = _name.text;
                         final email = _email.text;
                         final phone = _phoneNumber.text;
+
+                        if (name.isEmpty || phone.isEmpty) {
+                          if (mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+                                      Icon(
+                                        Icons.error_outline,
+                                        color: Colors.red,
+                                        size: 50.0,
+                                      ),
+                                      SizedBox(height: 10.0),
+                                      Text(
+                                        'Error Occurred!',
+                                        style: TextStyle(
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(height: 10.0),
+                                      Text(
+                                        'Field is empty',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(fontSize: 16.0),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                duration: const Duration(
+                                  seconds: 2,
+                                ),
+                              ),
+                            );
+                          }
+                          return;
+                        }
+
                         var map = <String, String?>{};
                         /*for (int i = 0; i < clients.length; i++) {
                           map[i.toString()] = clients[i].name;

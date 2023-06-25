@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 User? user = FirebaseAuth.instance.currentUser;
@@ -256,22 +257,183 @@ class _RecordsPageState extends State<RecordsPage> {
                 valueListenable: _selectedEvents,
                 builder: (context, value, _) {
                   return ListView.builder(
+                    padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
                     itemCount: value.length,
                     itemBuilder: (context, index) {
-                      return Container(
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 12.0,
-                          vertical: 4.0,
-                        ),
-                        decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                        child: ListTile(
-                          onTap: () => print('${value[index]}'),
-                          title: Text('${value[index]}'),
-                        ),
-                      );
+                      return Align(
+                          alignment: Alignment.center,
+                          child: Padding(
+                            padding: EdgeInsets.only(bottom: 10),
+                            child: SizedBox(
+                              width: 320,
+                              height: 80,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(24),
+                                child: TextButton(
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadiusDirectional
+                                                      .circular(16)),
+                                          title: SelectableText(
+                                            value[index].clientName,
+                                          ),
+                                          content: SizedBox(
+                                            height: 200,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                SelectableText(
+                                                  value[index].phone,
+                                                  style: TextStyle(
+                                                    color: Colors.black
+                                                        .withOpacity(0.6),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height:
+                                                      value[index].email != ''
+                                                          ? 20
+                                                          : null,
+                                                ),
+                                                Container(
+                                                  child: value[index].email !=
+                                                          ''
+                                                      ? SelectableText(
+                                                          value[index].email,
+                                                          style: TextStyle(
+                                                            color: Colors.black
+                                                                .withOpacity(
+                                                                    0.6),
+                                                          ),
+                                                        )
+                                                      : null,
+                                                ),
+                                                const SizedBox(
+                                                  height: 20,
+                                                ),
+                                                SelectableText(
+                                                  DateFormat('dd.MM.yyyy HH:mm')
+                                                      .format(
+                                                    value[index].time,
+                                                  ),
+                                                  style: TextStyle(
+                                                    color: Colors.black
+                                                        .withOpacity(0.6),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 20,
+                                                ),
+                                                SelectableText(
+                                                  value[index].service,
+                                                  style: TextStyle(
+                                                    color: Colors.black
+                                                        .withOpacity(0.6),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 20,
+                                                ),
+                                                SelectableText(
+                                                  '${value[index].price} UAH',
+                                                  style: TextStyle(
+                                                    color: Colors.black
+                                                        .withOpacity(0.6),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context,
+                                                          rootNavigator: true)
+                                                      .pop(() {
+                                                    const RecordsPage();
+                                                  });
+                                                },
+                                                child: const Text(
+                                                  'BACK',
+                                                  style: TextStyle(
+                                                    color: const Color.fromRGBO(
+                                                        223, 195, 194, 1),
+                                                  ),
+                                                ))
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  style: const ButtonStyle(
+                                      backgroundColor: MaterialStatePropertyAll(
+                                    Color.fromRGBO(0, 0, 100, 0.1),
+                                  )),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            value[index].clientName,
+                                            style: TextStyle(
+                                              color:
+                                                  Colors.black.withOpacity(0.6),
+                                            ),
+                                          ),
+                                          const Expanded(child: SizedBox()),
+                                          Text(
+                                            value[index].phone,
+                                            style: TextStyle(
+                                              color:
+                                                  Colors.black.withOpacity(0.6),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                            DateFormat('dd.MM.yyyy HH:mm')
+                                                .format(
+                                              value[index].time,
+                                            ),
+                                            style: TextStyle(
+                                              color:
+                                                  Colors.black.withOpacity(0.6),
+                                            ),
+                                          ),
+                                          const Expanded(child: SizedBox()),
+                                          Icon(
+                                            Icons.arrow_forward_rounded,
+                                            color:
+                                                Colors.black.withOpacity(0.6),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ));
                     },
                   );
                 },

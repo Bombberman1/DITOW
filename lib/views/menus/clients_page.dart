@@ -135,7 +135,25 @@ class _ClientsPageState extends State<ClientsPage> {
         setState(() {
           selectedUserList = List.from(clients!);
         });
+        Navigator.of(context, rootNavigator: true).pop(() {
+          const ClientsPage();
+        });
       },
+      themeData: FilterListThemeData.light(context).copyWith(
+        choiceChipTheme: ChoiceChipThemeData.light(context).copyWith(
+          selectedBackgroundColor: const Color.fromRGBO(223, 195, 194, 1),
+        ),
+        controlBarButtonTheme:
+            ControlButtonBarThemeData.light(context).copyWith(
+          controlButtonTheme: const ControlButtonThemeData(
+            textStyle: TextStyle(
+              fontSize: 16,
+              color: Color.fromRGBO(223, 195, 194, 1),
+            ),
+            primaryButtonBackgroundColor: Color.fromRGBO(223, 195, 194, 1),
+          ),
+        ),
+      ),
     );
   }
 
